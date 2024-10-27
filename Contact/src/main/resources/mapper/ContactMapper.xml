@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BS.mapper.ContactMapper">
+
+    <resultMap id="BaseResultMap" type="BS.entity.Contact">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,address,phone
+    </sql>
+
+    <select id="selectContacts" resultMap="BaseResultMap">
+        select *
+        from contacts c
+        <where>
+            <if test="id!=null and id!=''">
+                and c.id = #{id}
+            </if>
+            <if test="name!=null and name!=''">
+                and name like  CONCAT('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectContactsCount" resultType="int">
+        select count(*)
+        from contacts c
+        <where>
+            <if test="id!=null and id!=''">
+                and c.id = #{id}
+            </if>
+            <if test="name!=null and name!=''">
+                and name like  CONCAT('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByContactName" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM contacts c
+        where c.name=#{name};
+    </select>
+</mapper>
